@@ -2,8 +2,9 @@
   "name": "apbcss-generator",
   "version": "0.0.1",
   "description": "Command line tool for developing APB CSS (Atomic Parts Base CSS)",
+  "main": "index.js",
   "bin": {
-    "apb": "index.js"
+    "apb": ".bin/apb"
   },
   "scripts": {
     "test": "$(npm bin)/mocha test/** -r test/spec_setup.js",
@@ -28,6 +29,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^7.0.14",
+    "@types/webpack": "^2.2.15",
     "chai": "^3.5.0",
     "concurrently": "^3.4.0",
     "del": "^2.2.2",
@@ -42,6 +44,7 @@
     "power-assert": "^1.4.2",
     "run-sequence": "^1.2.2",
     "ts-loader": "^2.0.3",
+    "ts-node": "^3.0.4",
     "typescript": "^2.3.1",
     "typings": "^2.1.1",
     "webpack": "^2.4.1"
@@ -49,5 +52,8 @@
   "bugs": {
     "url": "https://github.com/atomic-package/apb-cli/issues"
   },
-  "homepage": "https://github.com/atomic-package/apb-cli#readme"
+  "homepage": "https://github.com/atomic-package/apb-cli#readme",
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
 }

@@ -130,3 +130,5 @@ fs.mkdir('./scss', '757', function () {
   });
 
 });
+
+export default
