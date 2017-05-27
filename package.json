@@ -11,7 +11,7 @@
     "start": "concurrently \"npm run webpack:w\" \"gulp\"",
     "webpack": "webpack",
     "webpack:w": "webpack --progress --colors --watch",
-    "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
+    "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\""
   },
   "repository": {
     "type": "git",

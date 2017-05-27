@@ -1,5 +1,6 @@
 "use strict";
-var webpack = require('webpack');
+var webpack = require('webpack'),
+    path = require('path');
 
 module.exports = {
   entry: __dirname + "/lib/index.ts",
@@ -7,10 +8,10 @@ module.exports = {
     filename: "index.js",
     path: __dirname + "/public/"
   },
+  target: "node",
   module: {
     loaders: [
-      { test: /\.tsx?$/, loader: "ts-loader" },
-      { test: /\.html$/, loader: "html-loader?minimize=false" }
+      { test: /\.tsx?$/, loader: "ts-loader" }
     ]
   },
   resolve: {
@@ -22,5 +23,8 @@ module.exports = {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
       }
     })
-  ]
+  ],
+  node:{
+    fs: 'empty'
+  }
 };
