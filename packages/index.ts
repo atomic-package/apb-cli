@@ -5,7 +5,6 @@ const fs = require('fs');
 var userArgs = process.argv.slice(2);
 var commands = userArgs[0];
 
-
 fs.mkdir('./scss', '757', function () {
   var data = "//test";
   var common_inc_file = './scss/_common_inc.scss';
@@ -130,5 +129,3 @@ fs.mkdir('./scss', '757', function () {
   });
 
 });
-
-export default

@@ -2,7 +2,7 @@
   "name": "apbcss-generator",
   "version": "0.0.1",
   "description": "Command line tool for developing APB CSS (Atomic Parts Base CSS)",
-  "main": "index.js",
+  "main": "./packages/dist/index.js",
   "bin": {
     "apb": "./bin/apb"
   },

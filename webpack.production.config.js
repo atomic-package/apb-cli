@@ -3,9 +3,9 @@ var webpack = require('webpack'),
     path = require('path');
 
 module.exports = {
-  entry: __dirname + "/lib/index.ts",
+  entry: __dirname + "/packages/index.ts",
   output: {
-    filename: "index.js",
+    filename: "packages/dist/index.js",
     path: __dirname + "/"
   },
   target: "node",
