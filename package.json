@@ -4,7 +4,7 @@
   "description": "Command line tool for developing APB CSS (Atomic Parts Base CSS)",
   "main": "index.js",
   "bin": {
-    "apb": ".bin/apb"
+    "apb": "./bin/apb"
   },
   "scripts": {
     "test": "$(npm bin)/mocha test/** -r test/spec_setup.js",
