@@ -2,6 +2,7 @@
 import New from  './new';
 
 import { isArray } from "util";
+import { Params } from "./Params";
 
 // var program = require('commander');
 //
@@ -46,7 +47,10 @@ import { isArray } from "util";
 // console.log(' verbosity: %j', program.verbose);
 // console.log(' args: %j', program.args);
 
+
+
 export class Commands {
+  private params: Params;
 
   constructor(
     public userArgs,
@@ -81,8 +85,22 @@ export class Commands {
     console.log('--------');
 
     if(this.program.new && isArray(this.program.new)) {
-      new New(this.program.new);
+
+      if(this.program.new.length > 0) {
+        this.setParams({
+          directoryName: this.program.new[0]
+        });
+
+      } else {
+        this.setParams({});
+      }
+
+      new New(this.params);
     }
+  }
+
+  private setParams(data) {
+    this.params = Params.fromData(data);
   }
 }
 
