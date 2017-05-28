@@ -2,34 +2,45 @@ const fs = require('fs');
 
 
 export class New {
+  private _root_path: string = './';
+  private _directory_name: string = 'scss';
+  private _root_directory_path: string;
+
   constructor(params) {
+    if(params.length > 0) {
+      this._directory_name = params[0];
+    }
     console.log('new', params);
 
-    fs.mkdir('./scss', '757', function () {
-      var data = "//test";
-      var common_inc_file = './scss/_common_inc.scss';
-      var parts_file = './scss/_parts.scss';
-      var style_file = './scss/style.scss';
+    this._root_directory_path = this._root_path + this._directory_name;
 
-      fs.mkdir('./scss/base', '757', function () {
-        var base_file = './scss/base/_base.scss';
-        var mixin_file = './scss/base/_mixin.scss';
-        var reset_file = './scss/base/_reset.scss';
-        var setting_file = './scss/base/_setting.scss';
 
-        fs.writeFile(base_file, data, function(err) {
+    fs.mkdir(this._root_directory_path, '757', () => {
+      let data            = "//test";
+      let common_inc_file = this._root_directory_path + '/_common_inc.scss';
+      let parts_file      = this._root_directory_path + '/_parts.scss';
+      let style_file      = this._root_directory_path + '/style.scss';
+
+
+      fs.mkdir(this._root_directory_path + '/base', '757', () => {
+        let base_file    = this._root_directory_path + '/base/_base.scss';
+        let mixin_file   = this._root_directory_path + '/base/_mixin.scss';
+        let reset_file   = this._root_directory_path + '/base/_reset.scss';
+        let setting_file = this._root_directory_path + '/base/_setting.scss';
+
+        fs.writeFile(base_file, data, (err) => {
           if (err) { throw err; }
         });
 
-        fs.writeFile(mixin_file, data, function(err) {
+        fs.writeFile(mixin_file, data, (err) => {
           if (err) { throw err; }
         });
 
-        fs.writeFile(reset_file, data, function(err) {
+        fs.writeFile(reset_file, data, (err) => {
           if (err) { throw err; }
         });
 
-        fs.writeFile(setting_file, data, function(err) {
+        fs.writeFile(setting_file, data, (err) =>  {
           if (err) { throw err; }
         });
 

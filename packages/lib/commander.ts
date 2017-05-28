@@ -1,9 +1,11 @@
+import App from  '../config/app';
+
 let program = require('commander');
 
 export class Program {
   constructor() {
     program
-      .version('0.0.1')
+      .version(App.VERSION)
       .option('-n, --new', 'Add new')
       .option('-g, --generate', 'Add generate')
       .option('-p, --peppers', 'Add peppers')

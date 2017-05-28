@@ -1,4 +1,7 @@
+// commands
 import New from  './new';
+
+import { isArray } from "util";
 
 // var program = require('commander');
 //
@@ -43,7 +46,6 @@ import New from  './new';
 // console.log(' verbosity: %j', program.verbose);
 // console.log(' args: %j', program.args);
 
-import {isArray} from "util";
 export class Commands {
 
   constructor(
@@ -66,11 +68,17 @@ export class Commands {
   }
 
   private init() {
-    // console.log(this.program.peppers);
-    //
-    // console.log("new", this.program.new);
-    //
-    // console.log("g", this.program.generate);
+    console.log(this.program.new);
+    console.log(this.program.generate);
+    console.log(this.program.peppers);
+
+    console.log('----userArgs----');
+    console.log(this.userArgs);
+    console.log('--------');
+
+    console.log('----commands----');
+    console.log(this.commands);
+    console.log('--------');
 
     if(this.program.new && isArray(this.program.new)) {
       new New(this.program.new);
