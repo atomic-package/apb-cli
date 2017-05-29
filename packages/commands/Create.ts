@@ -2,7 +2,7 @@ import App from  '../config/app';
 
 const fs = require('fs');
 
-export class New {
+export class Create {
   constructor(params) {
     console.log('new', params);
 
@@ -134,4 +134,4 @@ export class New {
   }
 }
 
-export default New;
+export default Create;
