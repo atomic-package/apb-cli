@@ -2,7 +2,7 @@
 import Create from  './Create';
 
 import { isArray } from "util";
-import { Params } from "./Params";
+import { Params } from "../store/Params";
 
 export class Commands {
   private params: Params;
@@ -40,12 +40,10 @@ export class Commands {
     console.log('--------');
 
     if(this.program.new && isArray(this.program.new)) {
-
       if(this.program.new.length > 0) {
         this.setParams({
           directoryName: this.program.new[0]
         });
-
       } else {
         this.setParams({});
       }
