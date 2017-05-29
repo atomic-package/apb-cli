@@ -1,10 +1,13 @@
 import App from  '../config/app';
+import BaseModel from  '../models/create/base_model';
+
 
 const fs = require('fs');
 
 export class Create {
   constructor(params) {
     console.log('new', params);
+
 
     fs.mkdir(params.directoryPath, App.DIRECTORY_PERMISSION, () => {
       let data            = "//test";
@@ -13,29 +16,31 @@ export class Create {
       let style_file      = params.directoryPath + '/style.scss';
 
 
-      fs.mkdir(params.baseDirectoryPath, App.DIRECTORY_PERMISSION, () => {
-        let base_file    = params.baseDirectoryPath + '/_base.scss';
-        let mixin_file   = params.baseDirectoryPath + '/_mixin.scss';
-        let reset_file   = params.baseDirectoryPath + '/_reset.scss';
-        let setting_file = params.baseDirectoryPath + '/_setting.scss';
+      new BaseModel(params.baseDirectoryPath);
 
-        fs.writeFile(base_file, data, (err) => {
-          if (err) { throw err; }
-        });
-
-        fs.writeFile(mixin_file, data, (err) => {
-          if (err) { throw err; }
-        });
-
-        fs.writeFile(reset_file, data, (err) => {
-          if (err) { throw err; }
-        });
-
-        fs.writeFile(setting_file, data, (err) =>  {
-          if (err) { throw err; }
-        });
-
-      });
+      // fs.mkdir(params.baseDirectoryPath, App.DIRECTORY_PERMISSION, () => {
+      //   let base_file    = params.baseDirectoryPath + '/_base.scss';
+      //   let mixin_file   = params.baseDirectoryPath + '/_mixin.scss';
+      //   let reset_file   = params.baseDirectoryPath + '/_reset.scss';
+      //   let setting_file = params.baseDirectoryPath + '/_setting.scss';
+      //
+      //   fs.writeFile(base_file, data, (err) => {
+      //     if (err) { throw err; }
+      //   });
+      //
+      //   fs.writeFile(mixin_file, data, (err) => {
+      //     if (err) { throw err; }
+      //   });
+      //
+      //   fs.writeFile(reset_file, data, (err) => {
+      //     if (err) { throw err; }
+      //   });
+      //
+      //   fs.writeFile(setting_file, data, (err) =>  {
+      //     if (err) { throw err; }
+      //   });
+      //
+      // });
 
 
       fs.mkdir(params.pagesDirectoryPath, App.DIRECTORY_PERMISSION, () => {
