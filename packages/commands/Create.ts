@@ -17,32 +17,7 @@ export class Create {
 
 
       new BaseModel(params.baseDirectoryPath);
-
-      // fs.mkdir(params.baseDirectoryPath, App.DIRECTORY_PERMISSION, () => {
-      //   let base_file    = params.baseDirectoryPath + '/_base.scss';
-      //   let mixin_file   = params.baseDirectoryPath + '/_mixin.scss';
-      //   let reset_file   = params.baseDirectoryPath + '/_reset.scss';
-      //   let setting_file = params.baseDirectoryPath + '/_setting.scss';
-      //
-      //   fs.writeFile(base_file, data, (err) => {
-      //     if (err) { throw err; }
-      //   });
-      //
-      //   fs.writeFile(mixin_file, data, (err) => {
-      //     if (err) { throw err; }
-      //   });
-      //
-      //   fs.writeFile(reset_file, data, (err) => {
-      //     if (err) { throw err; }
-      //   });
-      //
-      //   fs.writeFile(setting_file, data, (err) =>  {
-      //     if (err) { throw err; }
-      //   });
-      //
-      // });
-
-
+      
       fs.mkdir(params.pagesDirectoryPath, App.DIRECTORY_PERMISSION, () => {
         let pages_file = params.pagesDirectoryPath + '/_pages_inc.scss';
         let index_file = params.pagesDirectoryPath + '/_index.scss';
