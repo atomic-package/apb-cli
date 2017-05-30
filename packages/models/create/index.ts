@@ -15,13 +15,9 @@ export class CreateModel {
     this.directoryName = directoryName;
 
     this.fetchScssFiles(() => {
-      this.filterScssFiles(directoryPath, () => {
-
-      });
+      this.filterScssFiles(directoryPath, () => {});
       this.createFilesData();
       this.makeFiles();
-
-      console.log(this);
 
       callback();
     })

@@ -45,6 +45,20 @@ export class CreateCommonModel {
       callback(fileList);
     });
   }
+
+  public getScssFilesData(directoryPath, directoryName, callback) {
+    fs.readdir((directoryPath + directoryName), (err, files) => {
+      if (err) throw err;
+
+      let fileDataList = [];
+
+      files.forEach((file) => {
+        fileDataList.push(file);
+      });
+
+      callback(fileDataList);
+    });
+  }
 }
 
 export default CreateCommonModel;
