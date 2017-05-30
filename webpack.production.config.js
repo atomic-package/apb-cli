@@ -6,7 +6,9 @@ module.exports = {
   entry: __dirname + "/packages/index.ts",
   output: {
     filename: "packages/dist/index.js",
-    path: __dirname + "/"
+    path: __dirname + "/",
+    library: "apb-cli",
+    libraryTarget: "umd"
   },
   target: "node",
   module: {

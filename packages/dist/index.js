@@ -1,4 +1,14 @@
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("fs"), require("path"), require("child_process"), require("events"), require("util"));
+	else if(typeof define === 'function' && define.amd)
+		define(["fs", "path", "child_process", "events", "util"], factory);
+	else if(typeof exports === 'object')
+		exports["apb-cli"] = factory(require("fs"), require("path"), require("child_process"), require("events"), require("util"));
+	else
+		root["apb-cli"] = factory(root["fs"], root["path"], root["child_process"], root["events"], root["util"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_14__, __WEBPACK_EXTERNAL_MODULE_15__, __WEBPACK_EXTERNAL_MODULE_16__) {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -139,6 +149,17 @@ var CreateCommonModel = (function () {
                 fileList.push(file);
             });
             callback(fileList);
+        });
+    };
+    CreateCommonModel.prototype.getScssFilesData = function (directoryPath, directoryName, callback) {
+        fs.readdir((directoryPath + directoryName), function (err, files) {
+            if (err)
+                throw err;
+            var fileDataList = [];
+            files.forEach(function (file) {
+                fileDataList.push(file);
+            });
+            callback(fileDataList);
         });
     };
     return CreateCommonModel;
@@ -1460,11 +1481,9 @@ var CreateModel = (function () {
         this.directoryPath = directoryPath;
         this.directoryName = directoryName;
         this.fetchScssFiles(function () {
-            _this.filterScssFiles(directoryPath, function () {
-            });
+            _this.filterScssFiles(directoryPath, function () { });
             _this.createFilesData();
             _this.makeFiles();
-            console.log(_this);
             callback();
         });
     }
@@ -1584,3 +1603,4 @@ module.exports = require("util");
 
 /***/ })
 /******/ ]);
+});
