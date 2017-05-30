@@ -4,8 +4,6 @@ import File from '../../store/File';
 
 const fs = require('fs');
 
-
-
 export class BaseModel {
   private baseDirectoryPath = './scss/base';
   private scss_files = [];
