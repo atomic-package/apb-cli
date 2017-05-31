@@ -1505,21 +1505,29 @@ var CreateModel = (function () {
         this.scss_files.forEach(function (file) {
             _this.files.push(File_1.default.fromData({
                 name: file,
-                path: _this.directoryPath + '/' + file
+                path: _this.directoryPath + '/' + file,
+                data: _this.fetchFileData(app_1.default.SCSS_FILES_PATH + _this.directoryName + '/' + file)
             }));
         });
     };
     CreateModel.prototype.makeFiles = function () {
         var _this = this;
-        var data = "//test";
         this.files.forEach(function (file) {
             fs.mkdir(_this.directoryPath, app_1.default.DIRECTORY_PERMISSION, function () {
-                fs.writeFile(file.path, data, function (err) {
+                fs.writeFile(file.path, file.data, function (err) {
                     if (err) {
                         throw err;
                     }
                 });
             });
+        });
+    };
+    CreateModel.prototype.fetchFileData = function (filePath) {
+        return fs.readFileSync(filePath, 'utf8', function (err, text) {
+            if (err) {
+                throw err;
+            }
+            return text;
         });
     };
     return CreateModel;

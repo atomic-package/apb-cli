@@ -42,20 +42,27 @@ export class CreateModel {
     this.scss_files.forEach((file) => {
       this.files.push(File.fromData({
         name: file,
-        path: this.directoryPath + '/' + file
+        path: this.directoryPath + '/' + file,
+        data: this.fetchFileData(App.SCSS_FILES_PATH + this.directoryName + '/' + file)
       }));
     });
   }
 
   public makeFiles() {
-    let data = "//test";
-
     this.files.forEach((file) => {
       fs.mkdir(this.directoryPath, App.DIRECTORY_PERMISSION, () => {
-        fs.writeFile(file.path, data, (err) => {
+        fs.writeFile(file.path, file.data, (err) => {
           if (err) { throw err; }
         });
       });
+    });
+  }
+
+  public fetchFileData(filePath) {
+    return fs.readFileSync(filePath, 'utf8', (err, text) => {
+      if (err) { throw err; }
+
+      return text;
     });
   }
 }
