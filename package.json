@@ -1,5 +1,5 @@
 {
-  "name": "apbcss-generator",
+  "name": "@atomic-package/apb-cli",
   "version": "0.0.1",
   "description": "Command line tool for developing APB CSS (Atomic Parts Base CSS)",
   "main": "./packages/dist/index.js",
