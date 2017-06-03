@@ -31,9 +31,6 @@ export class CreateCommonModel {
   }
 
   public fetchScssFiles(directoryName, callback) {
-    console.log(App.PACKAGE_PATH + '/packages/lib/files/scss/' + directoryName);
-
-
     fs.readdir((App.PACKAGE_PATH + '/packages/lib/files/scss/' + directoryName), (err, files) => {
       if (err) throw err;
 
