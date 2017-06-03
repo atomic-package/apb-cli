@@ -6,12 +6,12 @@ const fs   = require('fs');
 const path = require('path');
 
 export class CreateModel {
-  private directoryPath = './scss/base';
-  private directoryName = 'base';
-  private scss_files = [];
-  private files = [];
+  private directoryPath: string = './scss/base';
+  private directoryName: string = 'base';
+  private scss_files: string[]  = [];
+  private files                 = [];
 
-  constructor(directoryPath, directoryName, callback?) {
+  constructor(directoryPath: string, directoryName: string, callback?: Function) {
     this.directoryPath = directoryPath;
     this.directoryName = directoryName;
 
@@ -24,7 +24,10 @@ export class CreateModel {
     })
   }
 
-  public filterScssFiles(pagesDirectoryPath, callback?) {
+  /**
+   * Public Function
+   **/
+  public filterScssFiles(pagesDirectoryPath: string, callback?: Function): void {
     this.scss_files = this.scss_files.filter((file) => {
       return !(new Common().isFile(pagesDirectoryPath + '/' + file));
     });
@@ -32,14 +35,14 @@ export class CreateModel {
     callback();
   }
 
-  public fetchScssFiles(callback?) {
+  public fetchScssFiles(callback?: Function): void {
     new Common().fetchScssFiles(this.directoryName, (data) => {
       this.scss_files = data;
       callback();
     });
   }
 
-  public createFilesData() {
+  public createFilesData(): void {
     this.scss_files.forEach((file) => {
       this.files.push(File.fromData({
         name: file,
@@ -49,7 +52,7 @@ export class CreateModel {
     });
   }
 
-  public makeFiles() {
+  public makeFiles(): void {
     this.files.forEach((file) => {
       fs.mkdir(this.directoryPath, App.DIRECTORY_PERMISSION, () => {
         fs.writeFile(file.path, file.data, (err) => {
@@ -59,7 +62,7 @@ export class CreateModel {
     });
   }
 
-  public fetchFileData(filePath) {
+  public fetchFileData(filePath: string) {
     return fs.readFileSync(filePath, 'utf8', (err, text) => {
       if (err) { throw err; }
 

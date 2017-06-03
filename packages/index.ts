@@ -1,7 +1,4 @@
 'use strict';
-const path = require('path');
-
-let userRunPath = process.cwd();
 let userArgs = process.argv.slice(2);
 
 import Program from  './lib/commander';

@@ -4,14 +4,14 @@ const fs = require('fs');
 const path = require('path');
 
 export class CreateCommonModel {
-  constructor() {
-  }
-
-  public isDir(filepath) {
+  /**
+   * Public Function
+   **/
+  public isDir(filepath: string): Boolean {
     return fs.existsSync(filepath) && fs.statSync(filepath).isDirectory();
   }
 
-  public isFile(filepath) {
+  public isFile(filepath: string): Boolean {
     try {
       fs.statSync(filepath);
       return true
@@ -20,7 +20,7 @@ export class CreateCommonModel {
     }
   }
 
-  public makeDirectory(directoryPath, callback) {
+  public makeDirectory(directoryPath: string, callback: Function) {
     fs.mkdir(directoryPath, App.DIRECTORY_PERMISSION, (err) => {
       if (err) {
         console.error(err);
@@ -30,7 +30,7 @@ export class CreateCommonModel {
     });
   }
 
-  public fetchScssFiles(directoryName, callback) {
+  public fetchScssFiles(directoryName: string, callback: Function) {
     fs.readdir((App.PACKAGE_PATH + '/packages/lib/files/scss/' + directoryName), (err, files) => {
       if (err) throw err;
 
@@ -39,7 +39,6 @@ export class CreateCommonModel {
       files.filter((file) => {
         return /.*\.scss/.test(file);
       }).forEach((file) => {
-        //console.log(this.isFile('./packages/lib/files/scss/' + directoryName + '/' + file), file);
         fileList.push(file);
       });
 
@@ -47,7 +46,7 @@ export class CreateCommonModel {
     });
   }
 
-  public getScssFilesData(directoryPath, directoryName, callback) {
+  public getScssFilesData(directoryPath: string, directoryName: string, callback: Function) {
     fs.readdir((directoryPath + directoryName), (err, files) => {
       if (err) throw err;
 
