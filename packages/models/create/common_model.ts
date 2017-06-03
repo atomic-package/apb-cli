@@ -51,9 +51,6 @@ export class CreateCommonModel {
   }
 
   public getScssFilesData(directoryPath, directoryName, callback) {
-
-    console.log(directoryPath + directoryName);
-
     fs.readdir((directoryPath + directoryName), (err, files) => {
       if (err) throw err;
 

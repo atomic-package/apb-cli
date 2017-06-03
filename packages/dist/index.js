@@ -97,7 +97,7 @@ module.exports = require("fs");
 Object.defineProperty(exports, "__esModule", { value: true });
 var path = __webpack_require__(0);
 var App = {
-    VERSION: "0.0.4",
+    VERSION: "0.0.5",
     DIRECTORY_PERMISSION: '757',
     SCSS_FILES_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/') + '/packages/lib/files/scss',
     PACKAGE_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/')
@@ -1443,7 +1443,6 @@ var CreateCommonModel = (function () {
         });
     };
     CreateCommonModel.prototype.getScssFilesData = function (directoryPath, directoryName, callback) {
-        console.log(directoryPath + directoryName);
         fs.readdir((directoryPath + directoryName), function (err, files) {
             if (err)
                 throw err;
@@ -1471,6 +1470,7 @@ var app_1 = __webpack_require__(2);
 var common_model_1 = __webpack_require__(10);
 var File_1 = __webpack_require__(12);
 var fs = __webpack_require__(1);
+var path = __webpack_require__(0);
 var CreateModel = (function () {
     function CreateModel(directoryPath, directoryName, callback) {
         var _this = this;
@@ -1506,7 +1506,7 @@ var CreateModel = (function () {
             _this.files.push(File_1.default.fromData({
                 name: file,
                 path: _this.directoryPath + '/' + file,
-                data: _this.fetchFileData(app_1.default.SCSS_FILES_PATH + _this.directoryName + '/' + file)
+                data: _this.fetchFileData(path.resolve(app_1.default.SCSS_FILES_PATH, _this.directoryName, file))
             }));
         });
     };
@@ -1523,7 +1523,6 @@ var CreateModel = (function () {
         });
     };
     CreateModel.prototype.fetchFileData = function (filePath) {
-        console.log('ここかな', filePath);
         return fs.readFileSync(filePath, 'utf8', function (err, text) {
             if (err) {
                 throw err;

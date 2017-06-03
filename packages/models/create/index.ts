@@ -2,7 +2,8 @@ import App from  '../../config/app';
 import Common from './common_model';
 import File from '../../store/File';
 
-const fs = require('fs');
+const fs   = require('fs');
+const path = require('path');
 
 export class CreateModel {
   private directoryPath = './scss/base';
@@ -43,7 +44,7 @@ export class CreateModel {
       this.files.push(File.fromData({
         name: file,
         path: this.directoryPath + '/' + file,
-        data: this.fetchFileData(App.SCSS_FILES_PATH + this.directoryName + '/' + file)
+        data: this.fetchFileData(path.resolve(App.SCSS_FILES_PATH, this.directoryName, file))
       }));
     });
   }
@@ -59,8 +60,6 @@ export class CreateModel {
   }
 
   public fetchFileData(filePath) {
-    console.log('ここかな', filePath);
-
     return fs.readFileSync(filePath, 'utf8', (err, text) => {
       if (err) { throw err; }
 
