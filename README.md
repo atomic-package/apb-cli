@@ -28,7 +28,7 @@ apb new
 
 scssフォルダを基に、各ファイルが生成されます。
 
-** Designation Folder Name **
+**Designation Folder Name**
 
 ```
 apb new [appName]
@@ -37,7 +37,7 @@ apb new [appName]
 任意のフォルダ名を指定できます。
 
 
-** Designation Create Path **
+**Designation Create Path**
 
 
 ```
