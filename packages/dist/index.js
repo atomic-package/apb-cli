@@ -97,9 +97,9 @@ module.exports = require("fs");
 Object.defineProperty(exports, "__esModule", { value: true });
 var path = __webpack_require__(0);
 var App = {
-    VERSION: "0.0.1",
+    VERSION: "0.0.4",
     DIRECTORY_PERMISSION: '757',
-    SCSS_FILES_PATH: './packages/lib/files/scss/',
+    SCSS_FILES_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/') + '/packages/lib/files/scss',
     PACKAGE_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/')
 };
 exports.default = App;
@@ -1429,6 +1429,7 @@ var CreateCommonModel = (function () {
         });
     };
     CreateCommonModel.prototype.fetchScssFiles = function (directoryName, callback) {
+        console.log(app_1.default.PACKAGE_PATH + '/packages/lib/files/scss/' + directoryName);
         fs.readdir((app_1.default.PACKAGE_PATH + '/packages/lib/files/scss/' + directoryName), function (err, files) {
             if (err)
                 throw err;
@@ -1442,6 +1443,7 @@ var CreateCommonModel = (function () {
         });
     };
     CreateCommonModel.prototype.getScssFilesData = function (directoryPath, directoryName, callback) {
+        console.log(directoryPath + directoryName);
         fs.readdir((directoryPath + directoryName), function (err, files) {
             if (err)
                 throw err;
@@ -1521,6 +1523,7 @@ var CreateModel = (function () {
         });
     };
     CreateModel.prototype.fetchFileData = function (filePath) {
+        console.log('ここかな', filePath);
         return fs.readFileSync(filePath, 'utf8', function (err, text) {
             if (err) {
                 throw err;

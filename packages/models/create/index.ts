@@ -59,6 +59,8 @@ export class CreateModel {
   }
 
   public fetchFileData(filePath) {
+    console.log('ここかな', filePath);
+
     return fs.readFileSync(filePath, 'utf8', (err, text) => {
       if (err) { throw err; }
 
