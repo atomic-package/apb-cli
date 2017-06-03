@@ -1,12 +1,12 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("fs"), require("path"), require("child_process"), require("events"), require("util"));
+		module.exports = factory(require("path"), require("fs"), require("child_process"), require("events"), require("util"));
 	else if(typeof define === 'function' && define.amd)
-		define(["fs", "path", "child_process", "events", "util"], factory);
+		define(["path", "fs", "child_process", "events", "util"], factory);
 	else if(typeof exports === 'object')
-		exports["apb-cli"] = factory(require("fs"), require("path"), require("child_process"), require("events"), require("util"));
+		exports["apb-cli"] = factory(require("path"), require("fs"), require("child_process"), require("events"), require("util"));
 	else
-		root["apb-cli"] = factory(root["fs"], root["path"], root["child_process"], root["events"], root["util"]);
+		root["apb-cli"] = factory(root["path"], root["fs"], root["child_process"], root["events"], root["util"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_14__, __WEBPACK_EXTERNAL_MODULE_15__, __WEBPACK_EXTERNAL_MODULE_16__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -73,20 +73,20 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = require("fs");
+module.exports = require("path");
 
 /***/ }),
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = require("path");
+module.exports = require("fs");
 
 /***/ }),
 /* 2 */
@@ -95,10 +95,12 @@ module.exports = require("path");
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var path = __webpack_require__(0);
 var App = {
     VERSION: "0.0.1",
     DIRECTORY_PERMISSION: '757',
-    SCSS_FILES_PATH: './packages/lib/files/scss/'
+    SCSS_FILES_PATH: './packages/lib/files/scss/',
+    PACKAGE_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/')
 };
 exports.default = App;
 
@@ -110,72 +112,7 @@ exports.default = App;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var app_1 = __webpack_require__(2);
-var fs = __webpack_require__(0);
-var CreateCommonModel = (function () {
-    function CreateCommonModel() {
-    }
-    CreateCommonModel.prototype.isDir = function (filepath) {
-        return fs.existsSync(filepath) && fs.statSync(filepath).isDirectory();
-    };
-    CreateCommonModel.prototype.isFile = function (filepath) {
-        try {
-            fs.statSync(filepath);
-            return true;
-        }
-        catch (err) {
-            if (err.code === 'ENOENT')
-                return false;
-        }
-    };
-    CreateCommonModel.prototype.makeDirectory = function (directoryPath, callback) {
-        fs.mkdir(directoryPath, app_1.default.DIRECTORY_PERMISSION, function (err) {
-            if (err) {
-                console.error(err);
-            }
-            else {
-                callback();
-            }
-        });
-    };
-    CreateCommonModel.prototype.fetchScssFiles = function (directoryName, callback) {
-        fs.readdir(('./packages/lib/files/scss/' + directoryName), function (err, files) {
-            if (err)
-                throw err;
-            var fileList = [];
-            files.filter(function (file) {
-                return /.*\.scss/.test(file);
-            }).forEach(function (file) {
-                fileList.push(file);
-            });
-            callback(fileList);
-        });
-    };
-    CreateCommonModel.prototype.getScssFilesData = function (directoryPath, directoryName, callback) {
-        fs.readdir((directoryPath + directoryName), function (err, files) {
-            if (err)
-                throw err;
-            var fileDataList = [];
-            files.forEach(function (file) {
-                fileDataList.push(file);
-            });
-            callback(fileDataList);
-        });
-    };
-    return CreateCommonModel;
-}());
-exports.CreateCommonModel = CreateCommonModel;
-exports.default = CreateCommonModel;
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Create_1 = __webpack_require__(9);
+var Create_1 = __webpack_require__(8);
 var util_1 = __webpack_require__(16);
 var Params_1 = __webpack_require__(13);
 var Commands = (function () {
@@ -189,9 +126,6 @@ var Commands = (function () {
         return new Commands(data.userArgs ? data.userArgs : null, data.commands ? data.commands : null, data.program ? data.program : null);
     };
     Commands.prototype.init = function () {
-        console.log(this.program.new);
-        console.log(this.program.generate);
-        console.log(this.program.peppers);
         console.log('----userArgs----');
         console.log(this.userArgs);
         console.log('--------');
@@ -199,16 +133,19 @@ var Commands = (function () {
         console.log(this.commands);
         console.log('--------');
         if (this.program.new && util_1.isArray(this.program.new)) {
-            if (this.program.new.length > 0) {
-                this.setParams({
-                    directoryName: this.program.new[0]
-                });
-            }
-            else {
-                this.setParams({});
-            }
-            new Create_1.default(this.params);
+            this.runNewCommand();
         }
+    };
+    Commands.prototype.runNewCommand = function () {
+        if (this.program.new.length > 0) {
+            this.setParams({
+                directoryName: this.program.new[0]
+            });
+        }
+        else {
+            this.setParams({});
+        }
+        new Create_1.default(this.params);
     };
     Commands.prototype.setParams = function (data) {
         this.params = Params_1.Params.fromData(data);
@@ -220,14 +157,14 @@ exports.default = Commands;
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = __webpack_require__(2);
-var program = __webpack_require__(7);
+var program = __webpack_require__(6);
 var Program = (function () {
     function Program() {
         program
@@ -248,7 +185,7 @@ exports.default = Program;
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -264,7 +201,7 @@ exports.default = Model;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -273,11 +210,11 @@ exports.default = Model;
 
 var EventEmitter = __webpack_require__(15).EventEmitter;
 var spawn = __webpack_require__(14).spawn;
-var readlink = __webpack_require__(8).readlinkSync;
-var path = __webpack_require__(1);
+var readlink = __webpack_require__(7).readlinkSync;
+var path = __webpack_require__(0);
 var dirname = path.dirname;
 var basename = path.basename;
-var fs = __webpack_require__(0);
+var fs = __webpack_require__(1);
 
 /**
  * Expose the root command.
@@ -1380,10 +1317,10 @@ function exists(file) {
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var fs = __webpack_require__(0)
+var fs = __webpack_require__(1)
   , lstat = fs.lstatSync;
 
 exports.readlinkSync = function (p) {
@@ -1398,17 +1335,15 @@ exports.readlinkSync = function (p) {
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = __webpack_require__(11);
-var fs = __webpack_require__(0);
 var Create = (function () {
     function Create(params) {
-        console.log('new', params);
         new index_1.default(params.directoryPath, '', function () {
             new index_1.default(params.baseDirectoryPath, params.baseDirectoryName, function () { });
             new index_1.default(params.pagesDirectoryPath, params.pagesDirectoryName, function () { });
@@ -1422,21 +1357,18 @@ exports.default = Create;
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var path = __webpack_require__(0);
+var userRunPath = process.cwd();
 var userArgs = process.argv.slice(2);
-var commander_1 = __webpack_require__(5);
-var index_1 = __webpack_require__(6);
-var commands_1 = __webpack_require__(4);
-var path = __webpack_require__(1);
-var common_model_1 = __webpack_require__(3);
-new common_model_1.default().fetchScssFiles('base', function (data) {
-    console.log(data);
-});
+var commander_1 = __webpack_require__(4);
+var index_1 = __webpack_require__(5);
+var commands_1 = __webpack_require__(3);
 var ApbCli = (function () {
     function ApbCli(userArgs, commands) {
         this.userArgs = userArgs;
@@ -1461,6 +1393,72 @@ exports.default = ApbCli.fromData({
 
 
 /***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var app_1 = __webpack_require__(2);
+var fs = __webpack_require__(1);
+var path = __webpack_require__(0);
+var CreateCommonModel = (function () {
+    function CreateCommonModel() {
+    }
+    CreateCommonModel.prototype.isDir = function (filepath) {
+        return fs.existsSync(filepath) && fs.statSync(filepath).isDirectory();
+    };
+    CreateCommonModel.prototype.isFile = function (filepath) {
+        try {
+            fs.statSync(filepath);
+            return true;
+        }
+        catch (err) {
+            if (err.code === 'ENOENT')
+                return false;
+        }
+    };
+    CreateCommonModel.prototype.makeDirectory = function (directoryPath, callback) {
+        fs.mkdir(directoryPath, app_1.default.DIRECTORY_PERMISSION, function (err) {
+            if (err) {
+                console.error(err);
+            }
+            else {
+                callback();
+            }
+        });
+    };
+    CreateCommonModel.prototype.fetchScssFiles = function (directoryName, callback) {
+        fs.readdir((app_1.default.PACKAGE_PATH + '/packages/lib/files/scss/' + directoryName), function (err, files) {
+            if (err)
+                throw err;
+            var fileList = [];
+            files.filter(function (file) {
+                return /.*\.scss/.test(file);
+            }).forEach(function (file) {
+                fileList.push(file);
+            });
+            callback(fileList);
+        });
+    };
+    CreateCommonModel.prototype.getScssFilesData = function (directoryPath, directoryName, callback) {
+        fs.readdir((directoryPath + directoryName), function (err, files) {
+            if (err)
+                throw err;
+            var fileDataList = [];
+            files.forEach(function (file) {
+                fileDataList.push(file);
+            });
+            callback(fileDataList);
+        });
+    };
+    return CreateCommonModel;
+}());
+exports.CreateCommonModel = CreateCommonModel;
+exports.default = CreateCommonModel;
+
+
+/***/ }),
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1468,9 +1466,9 @@ exports.default = ApbCli.fromData({
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = __webpack_require__(2);
-var common_model_1 = __webpack_require__(3);
+var common_model_1 = __webpack_require__(10);
 var File_1 = __webpack_require__(12);
-var fs = __webpack_require__(0);
+var fs = __webpack_require__(1);
 var CreateModel = (function () {
     function CreateModel(directoryPath, directoryName, callback) {
         var _this = this;
@@ -1566,7 +1564,7 @@ exports.default = File;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var path = __webpack_require__(1);
+var path = __webpack_require__(0);
 var Params = (function () {
     function Params(rootPath, directoryName, directoryPath, baseDirectoryName, baseDirectoryPath, pagesDirectoryName, pagesDirectoryPath, partsDirectoryName, partsDirectoryPath) {
         this.rootPath = rootPath;
@@ -1584,7 +1582,7 @@ var Params = (function () {
         this.partsDirectoryPath = this.directoryPath + '/' + this.partsDirectoryName;
     }
     Params.fromData = function (data) {
-        return new Params(data.path ? data.path : './', data.directoryName ? data.directoryName : 'scss', null, data.baseDirectoryName ? data.baseDirectoryName : 'base', null, data.pagesDirectoryName ? data.pagesDirectoryName : 'pages', null, data.partsDirectoryName ? data.partsDirectoryName : 'parts', null);
+        return new Params(data.path ? data.path : process.cwd() + '/', data.directoryName ? data.directoryName : 'scss', null, data.baseDirectoryName ? data.baseDirectoryName : 'base', null, data.pagesDirectoryName ? data.pagesDirectoryName : 'pages', null, data.partsDirectoryName ? data.partsDirectoryName : 'parts', null);
     };
     return Params;
 }());

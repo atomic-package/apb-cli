@@ -23,7 +23,7 @@ export class Params {
    **/
   static fromData(data: any): Params {
     return new Params(
-      data.path ? data.path : './',
+      data.path ? data.path : process.cwd() + '/',
       data.directoryName ? data.directoryName : 'scss',
       null,
       data.baseDirectoryName ? data.baseDirectoryName : 'base',

@@ -1,19 +1,12 @@
 'use strict';
+const path = require('path');
+
+let userRunPath = process.cwd();
 let userArgs = process.argv.slice(2);
 
 import Program from  './lib/commander';
 import Model from './models/index';
 import Commands from  './commands';
-
-const path = require('path');
-
-import Common from './models/create/common_model';
-
-new Common().fetchScssFiles('base', (data) => {
-  console.log(data);
-});
-
-
 
 /**
  * APB CLI Class

@@ -26,10 +26,13 @@ export class Commands {
     );
   }
 
+  /**
+   * Private Function
+   **/
   private init() {
-    console.log(this.program.new);
-    console.log(this.program.generate);
-    console.log(this.program.peppers);
+    // console.log(this.program.new);
+    // console.log(this.program.generate);
+    // console.log(this.program.peppers);
 
     console.log('----userArgs----');
     console.log(this.userArgs);
@@ -40,16 +43,20 @@ export class Commands {
     console.log('--------');
 
     if(this.program.new && isArray(this.program.new)) {
-      if(this.program.new.length > 0) {
-        this.setParams({
-          directoryName: this.program.new[0]
-        });
-      } else {
-        this.setParams({});
-      }
-
-      new Create(this.params);
+      this.runNewCommand();
     }
+  }
+
+  private runNewCommand() {
+    if(this.program.new.length > 0) {
+      this.setParams({
+        directoryName: this.program.new[0]
+      });
+    } else {
+      this.setParams({});
+    }
+
+    new Create(this.params);
   }
 
   private setParams(data) {

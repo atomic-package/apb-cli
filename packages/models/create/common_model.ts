@@ -1,6 +1,7 @@
 import App from  '../../config/app';
 
 const fs = require('fs');
+const path = require('path');
 
 export class CreateCommonModel {
   constructor() {
@@ -30,7 +31,7 @@ export class CreateCommonModel {
   }
 
   public fetchScssFiles(directoryName, callback) {
-    fs.readdir(('./packages/lib/files/scss/' + directoryName), (err, files) => {
+    fs.readdir((App.PACKAGE_PATH + '/packages/lib/files/scss/' + directoryName), (err, files) => {
       if (err) throw err;
 
       let fileList = [];
