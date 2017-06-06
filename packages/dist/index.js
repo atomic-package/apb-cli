@@ -7,7 +7,7 @@
 		exports["apb-cli"] = factory(require("path"), require("fs"), require("child_process"), require("events"), require("util"));
 	else
 		root["apb-cli"] = factory(root["path"], root["fs"], root["child_process"], root["events"], root["util"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_14__, __WEBPACK_EXTERNAL_MODULE_15__, __WEBPACK_EXTERNAL_MODULE_16__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_13__, __WEBPACK_EXTERNAL_MODULE_14__, __WEBPACK_EXTERNAL_MODULE_15__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -97,9 +97,9 @@ module.exports = require("fs");
 Object.defineProperty(exports, "__esModule", { value: true });
 var path = __webpack_require__(0);
 var App = {
-    VERSION: "0.0.6",
+    VERSION: "0.0.8",
     DIRECTORY_PERMISSION: '757',
-    SCSS_FILES_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/') + '/packages/lib/files/scss',
+    SCSS_FILES_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/packages/lib/files/scss'),
     PACKAGE_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/')
 };
 exports.default = App;
@@ -112,9 +112,9 @@ exports.default = App;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Create_1 = __webpack_require__(8);
-var util_1 = __webpack_require__(16);
-var Params_1 = __webpack_require__(13);
+var Create_1 = __webpack_require__(7);
+var util_1 = __webpack_require__(15);
+var Params_1 = __webpack_require__(12);
 var Commands = (function () {
     function Commands(userArgs, commands, program) {
         this.userArgs = userArgs;
@@ -164,7 +164,7 @@ exports.default = Commands;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = __webpack_require__(2);
-var program = __webpack_require__(6);
+var program = __webpack_require__(5);
 var Program = (function () {
     function Program() {
         program
@@ -188,29 +188,13 @@ exports.default = Program;
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Model = (function () {
-    function Model() {
-    }
-    return Model;
-}());
-exports.Model = Model;
-exports.default = Model;
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
 /**
  * Module dependencies.
  */
 
-var EventEmitter = __webpack_require__(15).EventEmitter;
-var spawn = __webpack_require__(14).spawn;
-var readlink = __webpack_require__(7).readlinkSync;
+var EventEmitter = __webpack_require__(14).EventEmitter;
+var spawn = __webpack_require__(13).spawn;
+var readlink = __webpack_require__(6).readlinkSync;
 var path = __webpack_require__(0);
 var dirname = path.dirname;
 var basename = path.basename;
@@ -1317,7 +1301,7 @@ function exists(file) {
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var fs = __webpack_require__(1)
@@ -1335,13 +1319,13 @@ exports.readlinkSync = function (p) {
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var index_1 = __webpack_require__(11);
+var index_1 = __webpack_require__(10);
 var Create = (function () {
     function Create(params) {
         new index_1.default(params.directoryPath, '', function () {
@@ -1357,23 +1341,19 @@ exports.default = Create;
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var path = __webpack_require__(0);
-var userRunPath = process.cwd();
 var userArgs = process.argv.slice(2);
 var commander_1 = __webpack_require__(4);
-var index_1 = __webpack_require__(5);
 var commands_1 = __webpack_require__(3);
 var ApbCli = (function () {
     function ApbCli(userArgs, commands) {
         this.userArgs = userArgs;
         this.commands = commands;
-        this._model = new index_1.default();
         commands_1.default.fromData({
             userArgs: userArgs,
             commands: commands,
@@ -1393,7 +1373,7 @@ exports.default = ApbCli.fromData({
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1459,15 +1439,15 @@ exports.default = CreateCommonModel;
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = __webpack_require__(2);
-var common_model_1 = __webpack_require__(10);
-var File_1 = __webpack_require__(12);
+var common_model_1 = __webpack_require__(9);
+var File_1 = __webpack_require__(11);
 var fs = __webpack_require__(1);
 var path = __webpack_require__(0);
 var CreateModel = (function () {
@@ -1536,7 +1516,7 @@ exports.default = CreateModel;
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1559,7 +1539,7 @@ exports.default = File;
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1591,19 +1571,19 @@ exports.Params = Params;
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = require("child_process");
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = require("events");
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = require("util");

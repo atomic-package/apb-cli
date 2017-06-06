@@ -1,6 +1,5 @@
 "use strict";
-var webpack = require('webpack'),
-    path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
   entry: __dirname + "/packages/index.ts",

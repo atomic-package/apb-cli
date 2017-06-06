@@ -2,7 +2,6 @@
 let userArgs = process.argv.slice(2);
 
 import Program from  './lib/commander';
-import Model from './models/index';
 import Commands from  './commands';
 
 /**
@@ -10,14 +9,10 @@ import Commands from  './commands';
  * @public
  **/
 export class ApbCli {
-  private _model: Model;
-
   constructor(
     public userArgs: any,
     public commands: any
   ) {
-    this._model = new Model();
-
     Commands.fromData({
       userArgs: userArgs,
       commands: commands,
