@@ -56,7 +56,7 @@ apb new [appName] --path=path
 apb --generate [assetsType]
 ```
 
-** Shortcut **
+**Shortcut**
 
 ```
 apb -g [assetsType]
