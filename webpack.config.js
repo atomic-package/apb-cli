@@ -5,7 +5,7 @@ module.exports = {
   entry: __dirname + "/packages/index.ts",
   output: {
     filename: "packages/dist/index.js",
-    path: __dirname + "/public/"
+    path: __dirname + "/"
   },
   target: "node",
   module: {
