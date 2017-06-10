@@ -27,6 +27,11 @@ export class CreateModel {
   /**
    * Public Function
    **/
+  /**
+   * SCSS 存在しないファイルを取得
+   * @param {string} pagesDirectoryPath
+   * @param {Function} callback
+   */
   public filterScssFiles(pagesDirectoryPath: string, callback?: Function): void {
     this.scss_files = this.scss_files.filter((file) => {
       return !(new Common().isFile(pagesDirectoryPath + '/' + file));
@@ -35,6 +40,10 @@ export class CreateModel {
     callback();
   }
 
+  /**
+   * ディレクトリ単位 SCSS ファイルを取得
+   * @param {Function} callback
+   */
   public fetchScssFiles(callback?: Function): void {
     new Common().fetchScssFiles(this.directoryName, (data) => {
       this.scss_files = data;
@@ -42,6 +51,9 @@ export class CreateModel {
     });
   }
 
+  /**
+   * Fileを生成
+   */
   public createFilesData(): void {
     this.scss_files.forEach((file) => {
       this.files.push(File.fromData({
@@ -52,6 +64,9 @@ export class CreateModel {
     });
   }
 
+  /**
+   * SCSS ファイルを作成
+   */
   public makeFiles(): void {
     this.files.forEach((file) => {
       fs.mkdir(this.directoryPath, App.DIRECTORY_PERMISSION, () => {
@@ -64,6 +79,10 @@ export class CreateModel {
     });
   }
 
+  /**
+   * SCSS ファイルデータを取得
+   * @param {string} filePath
+   */
   public fetchFileData(filePath: string) {
     return fs.readFileSync(filePath, 'utf8', (err, text) => {
       if (err) { throw err; }
