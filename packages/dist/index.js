@@ -117,20 +117,22 @@ class Commands {
         return new Commands(data.userArgs ? data.userArgs : null, data.commands ? data.commands : null, data.program ? data.program : null);
     }
     init() {
-        console.log(this.program.new);
-        console.log(this.program.generate);
-        console.log('----userArgs----');
-        console.log(this.userArgs);
-        console.log('--------');
-        console.log('----commands----');
-        console.log(this.commands);
-        console.log('--------');
+        console.log(this.isPathCommand());
         if (this.program.new) {
             this.runNewCommand();
         }
         if (this.program.generate) {
             this.runGenerateCommand();
         }
+    }
+    isPathCommand() {
+        let isPath = false;
+        this.userArgs.forEach((args) => {
+            if (/^--path/.test(args)) {
+                isPath = true;
+            }
+        });
+        return isPath;
     }
     runNewCommand() {
         if (util_1.isArray(this.program.new) && this.program.new.length > 0) {
@@ -1547,13 +1549,24 @@ class Params {
         this.pagesDirectoryPath = pagesDirectoryPath;
         this.partsDirectoryName = partsDirectoryName;
         this.partsDirectoryPath = partsDirectoryPath;
-        this.directoryPath = this.rootPath + this.directoryName;
-        this.baseDirectoryPath = this.directoryPath + '/' + this.baseDirectoryName;
-        this.pagesDirectoryPath = this.directoryPath + '/' + this.pagesDirectoryName;
-        this.partsDirectoryPath = this.directoryPath + '/' + this.partsDirectoryName;
+        this.init();
     }
     static fromData(data) {
         return new Params(data.path ? data.path : process.cwd() + '/', data.directoryName ? data.directoryName : 'scss', null, data.baseDirectoryName ? data.baseDirectoryName : 'base', null, data.pagesDirectoryName ? data.pagesDirectoryName : 'pages', null, data.partsDirectoryName ? data.partsDirectoryName : 'parts', null);
+    }
+    init() {
+        if (!this.directoryPath) {
+            this.directoryPath = this.rootPath + this.directoryName;
+        }
+        if (!this.baseDirectoryPath) {
+            this.baseDirectoryPath = this.directoryPath + '/' + this.baseDirectoryName;
+        }
+        if (!this.pagesDirectoryPath) {
+            this.pagesDirectoryPath = this.directoryPath + '/' + this.pagesDirectoryName;
+        }
+        if (!this.partsDirectoryPath) {
+            this.partsDirectoryPath = this.directoryPath + '/' + this.partsDirectoryName;
+        }
     }
 }
 exports.Params = Params;

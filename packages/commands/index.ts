@@ -34,17 +34,19 @@ export class Commands {
    * 初期化
    */
   private init(): void {
-    console.log(this.program.new);
-    console.log(this.program.generate);
+    console.log(this.isPathCommand());
 
-
-    console.log('----userArgs----');
-    console.log(this.userArgs);
-    console.log('--------');
-
-    console.log('----commands----');
-    console.log(this.commands);
-    console.log('--------');
+    // console.log(this.program.new);
+    // console.log(this.program.generate);
+    //
+    //
+    // console.log('----userArgs----');
+    // console.log(this.userArgs);
+    // console.log('--------');
+    //
+    // console.log('----commands----');
+    // console.log(this.commands);
+    // console.log('--------');
 
     if(this.program.new) {
       this.runNewCommand();
@@ -54,6 +56,18 @@ export class Commands {
       this.runGenerateCommand();
     }
 
+  }
+
+  private isPathCommand(): boolean {
+    let isPath = false;
+
+    this.userArgs.forEach((args) => {
+      if(/^--path/.test(args)) {
+        isPath = true;
+      }
+    });
+
+    return isPath;
   }
 
   /**

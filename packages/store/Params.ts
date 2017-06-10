@@ -12,10 +12,7 @@ export class Params {
     public partsDirectoryName: string, // parts
     public partsDirectoryPath: string // ./scss/parts
   ) {
-    this.directoryPath      = this.rootPath + this.directoryName;
-    this.baseDirectoryPath  = this.directoryPath + '/' + this.baseDirectoryName;
-    this.pagesDirectoryPath = this.directoryPath + '/' + this.pagesDirectoryName;
-    this.partsDirectoryPath = this.directoryPath + '/' + this.partsDirectoryName;
+    this.init();
   }
 
   /**
@@ -33,5 +30,23 @@ export class Params {
       data.partsDirectoryName ? data.partsDirectoryName : 'parts',
       null
     );
+  }
+
+  private init() {
+    if(!this.directoryPath) {
+      this.directoryPath = this.rootPath + this.directoryName;
+    }
+
+    if(!this.baseDirectoryPath) {
+      this.baseDirectoryPath = this.directoryPath + '/' + this.baseDirectoryName;
+    }
+
+    if(!this.pagesDirectoryPath) {
+      this.pagesDirectoryPath = this.directoryPath + '/' + this.pagesDirectoryName;
+    }
+
+    if(!this.partsDirectoryPath) {
+      this.partsDirectoryPath = this.directoryPath + '/' + this.partsDirectoryName;
+    }
   }
 }
