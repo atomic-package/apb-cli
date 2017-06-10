@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -102,21 +102,98 @@ exports.default = App;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const Create_1 = __webpack_require__(7);
-const Generate_1 = __webpack_require__(16);
-const util_1 = __webpack_require__(15);
-const Params_1 = __webpack_require__(12);
+const app_1 = __webpack_require__(2);
+const common_model_1 = __webpack_require__(11);
+const File_1 = __webpack_require__(12);
+const fs = __webpack_require__(1);
+const path = __webpack_require__(0);
+class CreateModel {
+    constructor(directoryPath, directoryName, callback) {
+        this.directoryPath = './scss/base';
+        this.directoryName = 'base';
+        this.scss_files = [];
+        this.files = [];
+        this.directoryPath = directoryPath;
+        this.directoryName = directoryName;
+        this.fetchScssFiles(() => {
+            this.filterScssFiles(directoryPath, () => { });
+            this.createFilesData();
+            this.makeFiles();
+            callback();
+        });
+    }
+    filterScssFiles(pagesDirectoryPath, callback) {
+        this.scss_files = this.scss_files.filter((file) => {
+            return !(new common_model_1.default().isFile(pagesDirectoryPath + '/' + file));
+        });
+        callback();
+    }
+    fetchScssFiles(callback) {
+        new common_model_1.default().fetchScssFiles(this.directoryName, (data) => {
+            this.scss_files = data;
+            callback();
+        });
+    }
+    createFilesData() {
+        this.scss_files.forEach((file) => {
+            this.files.push(File_1.default.fromData({
+                name: file,
+                path: this.directoryPath + '/' + file,
+                data: this.fetchFileData(path.resolve(app_1.default.SCSS_FILES_PATH, this.directoryName, file))
+            }));
+        });
+    }
+    makeFiles() {
+        this.files.forEach((file) => {
+            fs.mkdir(this.directoryPath, app_1.default.DIRECTORY_PERMISSION, () => {
+                fs.writeFile(file.path, file.data, (err) => {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log("created file: " + file.path);
+                });
+            });
+        });
+    }
+    fetchFileData(filePath) {
+        return fs.readFileSync(filePath, 'utf8', (err, text) => {
+            if (err) {
+                throw err;
+            }
+            return text;
+        });
+    }
+}
+exports.CreateModel = CreateModel;
+exports.default = CreateModel;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const Create_1 = __webpack_require__(8);
+const Generate_1 = __webpack_require__(9);
+const util_1 = __webpack_require__(16);
+const Params_1 = __webpack_require__(13);
+const app_1 = __webpack_require__(2);
 class Commands {
     constructor(userArgs, commands, program) {
         this.userArgs = userArgs;
         this.commands = commands;
         this.program = program;
         this.init();
+        console.log("command end. ");
+        console.log("thank you!");
     }
     static fromData(data) {
         return new Commands(data.userArgs ? data.userArgs : null, data.commands ? data.commands : null, data.program ? data.program : null);
     }
     init() {
+        console.log("apb-cli start of version " + app_1.default.VERSION);
         if (this.isPathCommand()) {
             console.log(this.getInputPath());
         }
@@ -176,14 +253,14 @@ exports.default = Commands;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __webpack_require__(2);
-let program = __webpack_require__(5);
+let program = __webpack_require__(6);
 class Program {
     constructor() {
         program
@@ -199,16 +276,16 @@ exports.default = Program;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
  * Module dependencies.
  */
 
-var EventEmitter = __webpack_require__(14).EventEmitter;
-var spawn = __webpack_require__(13).spawn;
-var readlink = __webpack_require__(6).readlinkSync;
+var EventEmitter = __webpack_require__(15).EventEmitter;
+var spawn = __webpack_require__(14).spawn;
+var readlink = __webpack_require__(7).readlinkSync;
 var path = __webpack_require__(0);
 var dirname = path.dirname;
 var basename = path.basename;
@@ -1315,7 +1392,7 @@ function exists(file) {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var fs = __webpack_require__(1)
@@ -1333,13 +1410,13 @@ exports.readlinkSync = function (p) {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = __webpack_require__(10);
+const index_1 = __webpack_require__(3);
 class Create {
     constructor(params) {
         new index_1.default(params.directoryPath, '', () => {
@@ -1354,15 +1431,46 @@ exports.default = Create;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const index_1 = __webpack_require__(3);
+class Generate {
+    constructor(params, types) {
+        console.log(params);
+        switch (types) {
+            case 'base':
+                new index_1.default(params.baseDirectoryPath, params.baseDirectoryName, () => { });
+                break;
+            case 'pages':
+                new index_1.default(params.directoryPath, '', () => {
+                    new index_1.default(params.pagesDirectoryPath, params.pagesDirectoryName, () => { });
+                });
+                break;
+            case 'parts':
+                new index_1.default(params.directoryPath, '', () => {
+                    new index_1.default(params.partsDirectoryPath, params.partsDirectoryName, () => { });
+                });
+        }
+    }
+}
+exports.Generate = Generate;
+exports.default = Generate;
+
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 let userArgs = process.argv.slice(2);
-const commander_1 = __webpack_require__(4);
-const commands_1 = __webpack_require__(3);
+const commander_1 = __webpack_require__(5);
+const commands_1 = __webpack_require__(4);
 class ApbCli {
     constructor(userArgs, commands) {
         this.userArgs = userArgs;
@@ -1385,7 +1493,7 @@ exports.default = ApbCli.fromData({
 
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1448,79 +1556,7 @@ exports.default = CreateCommonModel;
 
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const app_1 = __webpack_require__(2);
-const common_model_1 = __webpack_require__(9);
-const File_1 = __webpack_require__(11);
-const fs = __webpack_require__(1);
-const path = __webpack_require__(0);
-class CreateModel {
-    constructor(directoryPath, directoryName, callback) {
-        this.directoryPath = './scss/base';
-        this.directoryName = 'base';
-        this.scss_files = [];
-        this.files = [];
-        this.directoryPath = directoryPath;
-        this.directoryName = directoryName;
-        this.fetchScssFiles(() => {
-            this.filterScssFiles(directoryPath, () => { });
-            this.createFilesData();
-            this.makeFiles();
-            callback();
-        });
-    }
-    filterScssFiles(pagesDirectoryPath, callback) {
-        this.scss_files = this.scss_files.filter((file) => {
-            return !(new common_model_1.default().isFile(pagesDirectoryPath + '/' + file));
-        });
-        callback();
-    }
-    fetchScssFiles(callback) {
-        new common_model_1.default().fetchScssFiles(this.directoryName, (data) => {
-            this.scss_files = data;
-            callback();
-        });
-    }
-    createFilesData() {
-        this.scss_files.forEach((file) => {
-            this.files.push(File_1.default.fromData({
-                name: file,
-                path: this.directoryPath + '/' + file,
-                data: this.fetchFileData(path.resolve(app_1.default.SCSS_FILES_PATH, this.directoryName, file))
-            }));
-        });
-    }
-    makeFiles() {
-        this.files.forEach((file) => {
-            fs.mkdir(this.directoryPath, app_1.default.DIRECTORY_PERMISSION, () => {
-                fs.writeFile(file.path, file.data, (err) => {
-                    if (err) {
-                        throw err;
-                    }
-                });
-            });
-        });
-    }
-    fetchFileData(filePath) {
-        return fs.readFileSync(filePath, 'utf8', (err, text) => {
-            if (err) {
-                throw err;
-            }
-            return text;
-        });
-    }
-}
-exports.CreateModel = CreateModel;
-exports.default = CreateModel;
-
-
-/***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1542,7 +1578,7 @@ exports.default = File;
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1584,53 +1620,22 @@ exports.Params = Params;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = require("child_process");
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = require("events");
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = require("util");
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = __webpack_require__(10);
-class Generate {
-    constructor(params, types) {
-        console.log(params);
-        switch (types) {
-            case 'base':
-                new index_1.default(params.baseDirectoryPath, params.baseDirectoryName, () => { });
-                break;
-            case 'pages':
-                new index_1.default(params.directoryPath, '', () => {
-                    new index_1.default(params.pagesDirectoryPath, params.pagesDirectoryName, () => { });
-                });
-                break;
-            case 'parts':
-                new index_1.default(params.directoryPath, '', () => {
-                    new index_1.default(params.partsDirectoryPath, params.partsDirectoryName, () => { });
-                });
-        }
-    }
-}
-exports.Generate = Generate;
-exports.default = Generate;
-
 
 /***/ })
 /******/ ]);

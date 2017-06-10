@@ -4,6 +4,7 @@ import Generate from  './Generate';
 
 import { isArray } from "util";
 import { Params } from "../store/Params";
+import App from "../config/app";
 
 export class Commands {
   private params: Params;
@@ -14,6 +15,9 @@ export class Commands {
     public program
   ) {
     this.init();
+
+    console.log("command end. ");
+    console.log("thank you!");
   }
 
   /**
@@ -34,6 +38,8 @@ export class Commands {
    * 初期化
    */
   private init(): void {
+    console.log("apb-cli start of version " + App.VERSION);
+
     if(this.isPathCommand()) {
       console.log(this.getInputPath());
     }

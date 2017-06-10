@@ -57,6 +57,8 @@ export class CreateModel {
       fs.mkdir(this.directoryPath, App.DIRECTORY_PERMISSION, () => {
         fs.writeFile(file.path, file.data, (err) => {
           if (err) { throw err; }
+
+          console.log("created file: " + file.path);
         });
       });
     });
