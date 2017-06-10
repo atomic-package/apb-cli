@@ -34,7 +34,9 @@ export class Commands {
    * 初期化
    */
   private init(): void {
-    console.log(this.isPathCommand());
+    if(this.isPathCommand()) {
+      console.log(this.getInputPath());
+    }
 
     // console.log(this.program.new);
     // console.log(this.program.generate);
@@ -68,6 +70,18 @@ export class Commands {
     });
 
     return isPath;
+  }
+
+  private getInputPath() {
+    let path = '';
+
+    this.userArgs.forEach((args) => {
+      if(/^--path=."?.+."?$/.test(args)) {
+        path = args.replace( /--path=/g , "");
+      }
+    });
+
+    return path;
   }
 
   /**

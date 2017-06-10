@@ -117,7 +117,9 @@ class Commands {
         return new Commands(data.userArgs ? data.userArgs : null, data.commands ? data.commands : null, data.program ? data.program : null);
     }
     init() {
-        console.log(this.isPathCommand());
+        if (this.isPathCommand()) {
+            console.log(this.getInputPath());
+        }
         if (this.program.new) {
             this.runNewCommand();
         }
@@ -133,6 +135,15 @@ class Commands {
             }
         });
         return isPath;
+    }
+    getInputPath() {
+        let path = '';
+        this.userArgs.forEach((args) => {
+            if (/^--path=."?.+."?$/.test(args)) {
+                path = args.replace(/--path=/g, "");
+            }
+        });
+        return path;
     }
     runNewCommand() {
         if (util_1.isArray(this.program.new) && this.program.new.length > 0) {
