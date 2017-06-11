@@ -8,6 +8,7 @@ export class Program {
       .version(App.VERSION)
       .option('-n, --new', 'Add new')
       .option('-g, --generate', 'Add generate')
+      .option('-p, --path', 'Add path')
       .parse(process.argv);
 
     Object.assign( this, program );

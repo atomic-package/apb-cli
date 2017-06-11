@@ -56,11 +56,13 @@ export class CreateModel {
    */
   public createFilesData(): void {
     this.scss_files.forEach((file) => {
-      this.files.push(File.fromData({
-        name: file,
-        path: this.directoryPath + '/' + file,
-        data: this.fetchFileData(path.resolve(App.SCSS_FILES_PATH, this.directoryName, file))
-      }));
+      this.files.push(
+        File.fromData({
+          name: file,
+          path: this.directoryPath + '/' + file,
+          data: this.fetchFileData(path.resolve(App.SCSS_FILES_PATH, this.directoryName, file))
+        })
+      );
     });
   }
 

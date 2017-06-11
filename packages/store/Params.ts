@@ -20,7 +20,7 @@ export class Params {
    **/
   static fromData(data: any): Params {
     return new Params(
-      data.path ? data.path : process.cwd() + '/',
+      data.path ? path.resolve(process.cwd(), data.path) : process.cwd() + '/',
       data.directoryName ? data.directoryName : 'scss',
       null,
       data.baseDirectoryName ? data.baseDirectoryName : 'base',
@@ -34,19 +34,19 @@ export class Params {
 
   private init() {
     if(!this.directoryPath) {
-      this.directoryPath = this.rootPath + this.directoryName;
+      this.directoryPath = path.resolve(this.rootPath, this.directoryName);
     }
 
     if(!this.baseDirectoryPath) {
-      this.baseDirectoryPath = this.directoryPath + '/' + this.baseDirectoryName;
+      this.baseDirectoryPath = path.resolve(this.directoryPath, this.baseDirectoryName);
     }
 
     if(!this.pagesDirectoryPath) {
-      this.pagesDirectoryPath = this.directoryPath + '/' + this.pagesDirectoryName;
+      this.pagesDirectoryPath = path.resolve(this.directoryPath, this.pagesDirectoryName);
     }
 
     if(!this.partsDirectoryPath) {
-      this.partsDirectoryPath = this.directoryPath + '/' + this.partsDirectoryName;
+      this.partsDirectoryPath = path.resolve(this.directoryPath, this.partsDirectoryName);
     }
   }
 }

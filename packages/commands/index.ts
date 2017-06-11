@@ -15,9 +15,6 @@ export class Commands {
     public program
   ) {
     this.init();
-
-    console.log("command end. ");
-    console.log("thank you!");
   }
 
   /**
@@ -40,24 +37,8 @@ export class Commands {
   private init(): void {
     console.log("apb-cli start of version " + App.VERSION);
 
-    if(this.isPathCommand()) {
-      console.log(this.getInputPath());
-    }
-
-    // console.log(this.program.new);
-    // console.log(this.program.generate);
-    //
-    //
-    // console.log('----userArgs----');
-    // console.log(this.userArgs);
-    // console.log('--------');
-    //
-    // console.log('----commands----');
-    // console.log(this.commands);
-    // console.log('--------');
-
     if(this.program.new) {
-      this.runNewCommand();
+      this.runNewCommand(this.getInputPath());
     }
 
     if(this.program.generate) {
@@ -78,8 +59,8 @@ export class Commands {
     return isPath;
   }
 
-  private getInputPath() {
-    let path = '';
+  private getInputPath(): null | string {
+    let path = null;
 
     this.userArgs.forEach((args) => {
       if(/^--path=."?.+."?$/.test(args)) {
@@ -93,17 +74,29 @@ export class Commands {
   /**
    * New Command
    */
-  private runNewCommand(): void {
+  private runNewCommand(path: null | string): void {
     if(isArray(this.program.new) && this.program.new.length > 0) {
       this.setParams({
-        directoryName: this.program.new[0]
+        directoryName: this.program.new[0],
+        path: path
       });
-    } else if(this.userArgs.length > 1) {
+
+    } else if(this.userArgs.length > 1 && !this.isPathCommand()) {
       this.setParams({
-        directoryName: this.userArgs[1]
+        directoryName: this.userArgs[1],
+        path: path
       });
+
+    } else if(this.userArgs.length > 2 && this.isPathCommand()) {
+      this.setParams({
+        directoryName: this.userArgs[1],
+        path: path
+      });
+
     } else {
-      this.setParams({});
+      this.setParams({
+        path: path
+      });
     }
 
     new Create(this.params);
