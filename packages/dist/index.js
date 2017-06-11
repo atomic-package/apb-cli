@@ -1,4 +1,14 @@
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("path"), require("fs"), require("child_process"), require("events"), require("util"));
+	else if(typeof define === 'function' && define.amd)
+		define(["path", "fs", "child_process", "events", "util"], factory);
+	else if(typeof exports === 'object')
+		exports["apb-cli"] = factory(require("path"), require("fs"), require("child_process"), require("events"), require("util"));
+	else
+		root["apb-cli"] = factory(root["path"], root["fs"], root["child_process"], root["events"], root["util"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_14__, __WEBPACK_EXTERNAL_MODULE_15__, __WEBPACK_EXTERNAL_MODULE_16__) {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -81,7 +91,7 @@ module.exports = require("path");
 Object.defineProperty(exports, "__esModule", { value: true });
 var path = __webpack_require__(0);
 var App = {
-    VERSION: "0.0.8",
+    VERSION: "0.0.9",
     DIRECTORY_PERMISSION: '757',
     SCSS_FILES_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/packages/lib/files/scss'),
     PACKAGE_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/')
@@ -1660,3 +1670,4 @@ module.exports = require("util");
 
 /***/ })
 /******/ ]);
+});
