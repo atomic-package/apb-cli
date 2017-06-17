@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("path"), require("fs"), require("child_process"), require("events"), require("util"));
+		module.exports = factory(require("path"), require("fs"), require("child_process"), require("events"));
 	else if(typeof define === 'function' && define.amd)
-		define(["path", "fs", "child_process", "events", "util"], factory);
+		define(["path", "fs", "child_process", "events"], factory);
 	else if(typeof exports === 'object')
-		exports["apb-cli"] = factory(require("path"), require("fs"), require("child_process"), require("events"), require("util"));
+		exports["apb-cli"] = factory(require("path"), require("fs"), require("child_process"), require("events"));
 	else
-		root["apb-cli"] = factory(root["path"], root["fs"], root["child_process"], root["events"], root["util"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_14__, __WEBPACK_EXTERNAL_MODULE_15__, __WEBPACK_EXTERNAL_MODULE_16__) {
+		root["apb-cli"] = factory(root["path"], root["fs"], root["child_process"], root["events"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_14__, __WEBPACK_EXTERNAL_MODULE_15__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -192,7 +192,6 @@ exports.default = CreateModel;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Create_1 = __webpack_require__(8);
 var Generate_1 = __webpack_require__(9);
-var util_1 = __webpack_require__(16);
 var Params_1 = __webpack_require__(13);
 var app_1 = __webpack_require__(1);
 var Commands = (function () {
@@ -208,7 +207,7 @@ var Commands = (function () {
     Commands.prototype.init = function () {
         console.log("apb-cli start of version " + app_1.default.VERSION);
         if (this.program.new) {
-            this.runNewCommand(this.getInputPath());
+            this.runNewCommand();
         }
         if (this.program.generate) {
             this.runGenerateCommand();
@@ -232,30 +231,31 @@ var Commands = (function () {
         });
         return path;
     };
-    Commands.prototype.runNewCommand = function (path) {
-        if (util_1.isArray(this.program.new) && this.program.new.length > 0) {
-            this.setParams({
-                directoryName: this.program.new[0],
-                path: path
-            });
+    Commands.prototype.getDirectoryName = function () {
+        if (!this.isDirectoryName())
+            return null;
+        for (var i = 1; i < this.userArgs.length; i++) {
+            if (!/^--path=."?.+."?$/.test(this.userArgs[i])) {
+                return this.userArgs[i];
+            }
         }
-        else if (this.userArgs.length > 1 && !this.isPathCommand()) {
-            this.setParams({
-                directoryName: this.userArgs[1],
-                path: path
-            });
+    };
+    Commands.prototype.isDirectoryName = function () {
+        if (this.userArgs.length < 1)
+            return false;
+        var isDirectoryName = false;
+        for (var i = 1; i < this.userArgs.length; i++) {
+            if (!/^--path=."?.+."?$/.test(this.userArgs[i])) {
+                isDirectoryName = true;
+            }
         }
-        else if (this.userArgs.length > 2 && this.isPathCommand()) {
-            this.setParams({
-                directoryName: this.userArgs[1],
-                path: path
-            });
-        }
-        else {
-            this.setParams({
-                path: path
-            });
-        }
+        return isDirectoryName;
+    };
+    Commands.prototype.runNewCommand = function () {
+        this.setParams({
+            directoryName: this.getDirectoryName(),
+            path: this.getInputPath()
+        });
         new Create_1.default(this.params);
     };
     Commands.prototype.runGenerateCommand = function () {
@@ -1496,6 +1496,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var userArgs = process.argv.slice(2);
 var commander_1 = __webpack_require__(5);
 var commands_1 = __webpack_require__(4);
+console.log(process.argv[1]);
 var ApbCli = (function () {
     function ApbCli(userArgs, commands) {
         this.userArgs = userArgs;
@@ -1661,12 +1662,6 @@ module.exports = require("child_process");
 /***/ (function(module, exports) {
 
 module.exports = require("events");
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-module.exports = require("util");
 
 /***/ })
 /******/ ]);

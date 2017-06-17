@@ -38,15 +38,18 @@ export class Commands {
     console.log("apb-cli start of version " + App.VERSION);
 
     if(this.program.new) {
-      this.runNewCommand(this.getInputPath());
+      this.runNewCommand();
     }
 
     if(this.program.generate) {
       this.runGenerateCommand();
     }
-
   }
 
+  /**
+   * パスが指定されているか判定
+   * @return boolean
+   */
   private isPathCommand(): boolean {
     let isPath = false;
 
@@ -59,6 +62,10 @@ export class Commands {
     return isPath;
   }
 
+  /**
+   * 指定されているパス名を取得
+   * @return string
+   */
   private getInputPath(): null | string {
     let path = null;
 
@@ -72,32 +79,45 @@ export class Commands {
   }
 
   /**
+   * 指定されているディレクトリ名を取得
+   * @return string
+   */
+  private getDirectoryName(): null | string {
+    if(!this.isDirectoryName()) return null;
+
+    for(let i = 1; i < this.userArgs.length; i++) {
+      if(!/^--path=."?.+."?$/.test(this.userArgs[i])) {
+        return this.userArgs[i];
+      }
+    }
+  }
+
+  /**
+   * ディレクトリ名が指定されているか判定
+   * @return boolean
+   */
+  private isDirectoryName(): boolean {
+    if(this.userArgs.length < 1) return false;
+
+    let isDirectoryName = false;
+
+    for(let i = 1; i < this.userArgs.length; i++) {
+      if(!/^--path=."?.+."?$/.test(this.userArgs[i])) {
+        isDirectoryName = true;
+      }
+    }
+
+    return isDirectoryName;
+  }
+
+  /**
    * New Command
    */
-  private runNewCommand(path: null | string): void {
-    if(isArray(this.program.new) && this.program.new.length > 0) {
-      this.setParams({
-        directoryName: this.program.new[0],
-        path: path
-      });
-
-    } else if(this.userArgs.length > 1 && !this.isPathCommand()) {
-      this.setParams({
-        directoryName: this.userArgs[1],
-        path: path
-      });
-
-    } else if(this.userArgs.length > 2 && this.isPathCommand()) {
-      this.setParams({
-        directoryName: this.userArgs[1],
-        path: path
-      });
-
-    } else {
-      this.setParams({
-        path: path
-      });
-    }
+  private runNewCommand(): void {
+    this.setParams({
+      directoryName: this.getDirectoryName(),
+      path: this.getInputPath()
+    });
 
     new Create(this.params);
   }

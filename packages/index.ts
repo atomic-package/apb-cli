@@ -4,6 +4,8 @@ let userArgs = process.argv.slice(2);
 import Program from  './lib/commander';
 import Commands from  './commands';
 
+console.log(process.argv[1]);
+
 /**
  * APB CLI Class
  * @public
