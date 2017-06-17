@@ -1,23 +1,17 @@
 import CreateModel from  '../models/create/index';
 
 export class Generate {
-  constructor(params, types) {
+  constructor(params) {
 
-    console.log(params);
-
-    switch (types) {
+    switch (params.generateParams.type) {
       case 'base':
-        new CreateModel(params.baseDirectoryPath, params.baseDirectoryName, () => {});
+        new CreateModel(params.directoryPath, params.baseDirectoryName, () => {});
         break;
       case 'pages':
-        new CreateModel(params.directoryPath, '', () => {
-          new CreateModel(params.pagesDirectoryPath, params.pagesDirectoryName, () => {});
-        });
+        new CreateModel(params.directoryPath, params.pagesDirectoryName, () => {});
         break;
       case 'parts':
-        new CreateModel(params.directoryPath, '', () => {
-          new CreateModel(params.partsDirectoryPath, params.partsDirectoryName, () => {});
-        });
+        new CreateModel(params.directoryPath, params.partsDirectoryName, () => {});
     }
   }
 }

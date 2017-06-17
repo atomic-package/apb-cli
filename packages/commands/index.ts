@@ -2,7 +2,6 @@
 import Create from  './Create';
 import Generate from  './Generate';
 
-import { isArray } from "util";
 import { Params } from "../store/Params";
 import App from "../config/app";
 
@@ -47,22 +46,6 @@ export class Commands {
   }
 
   /**
-   * パスが指定されているか判定
-   * @return boolean
-   */
-  private isPathCommand(): boolean {
-    let isPath = false;
-
-    this.userArgs.forEach((args) => {
-      if(/^--path/.test(args)) {
-        isPath = true;
-      }
-    });
-
-    return isPath;
-  }
-
-  /**
    * 指定されているパス名を取得
    * @return string
    */
@@ -87,7 +70,18 @@ export class Commands {
 
     for(let i = 1; i < this.userArgs.length; i++) {
       if(!/^--path=."?.+."?$/.test(this.userArgs[i])) {
-        return this.userArgs[i];
+        if(this.program.generate) {
+          if(
+            !/^base$/.test(this.userArgs[i]) &&
+            !/^parts$/.test(this.userArgs[i]) &&
+            !/^pages$/.test(this.userArgs[i])
+          ) {
+            return this.userArgs[i];
+          }
+
+        } else {
+          return this.userArgs[i];
+        }
       }
     }
   }
@@ -111,6 +105,24 @@ export class Commands {
   }
 
   /**
+   * 指定されているGenerate Command タイプを取得
+   * @return string
+   */
+  private getGenerateType(): string {
+    for(let i = 1; i < this.userArgs.length; i++) {
+      if(!/^--path=."?.+."?$/.test(this.userArgs[i])) {
+        if(/^base$/.test(this.userArgs[i])) {
+          return 'base';
+        } else if(/^parts$/.test(this.userArgs[i])) {
+          return 'parts';
+        } else if(/^pages$/.test(this.userArgs[i])) {
+          return 'pages';
+        }
+      }
+    }
+  }
+
+  /**
    * New Command
    */
   private runNewCommand(): void {
@@ -126,11 +138,15 @@ export class Commands {
    * Generate Command
    */
   private runGenerateCommand(): void {
-    if(this.userArgs.length > 1) {
-      this.setParams({});
+    this.setParams({
+      generateParams: {
+        directoryName: this.getDirectoryName(),
+        path: this.getInputPath(),
+        type: this.getGenerateType()
+      }
+    });
 
-      new Generate(this.params, this.userArgs[1]);
-    }
+    new Generate(this.params);
   }
 
   /**

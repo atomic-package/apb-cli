@@ -126,6 +126,7 @@ var CreateModel = (function () {
         this.files = [];
         this.directoryPath = directoryPath;
         this.directoryName = directoryName;
+        console.log(this.directoryName);
         this.fetchScssFiles(function () {
             _this.filterScssFiles(directoryPath, function () { });
             _this.createFilesData();
@@ -213,15 +214,6 @@ var Commands = (function () {
             this.runGenerateCommand();
         }
     };
-    Commands.prototype.isPathCommand = function () {
-        var isPath = false;
-        this.userArgs.forEach(function (args) {
-            if (/^--path/.test(args)) {
-                isPath = true;
-            }
-        });
-        return isPath;
-    };
     Commands.prototype.getInputPath = function () {
         var path = null;
         this.userArgs.forEach(function (args) {
@@ -236,7 +228,16 @@ var Commands = (function () {
             return null;
         for (var i = 1; i < this.userArgs.length; i++) {
             if (!/^--path=."?.+."?$/.test(this.userArgs[i])) {
-                return this.userArgs[i];
+                if (this.program.generate) {
+                    if (!/^base$/.test(this.userArgs[i]) &&
+                        !/^parts$/.test(this.userArgs[i]) &&
+                        !/^pages$/.test(this.userArgs[i])) {
+                        return this.userArgs[i];
+                    }
+                }
+                else {
+                    return this.userArgs[i];
+                }
             }
         }
     };
@@ -251,6 +252,21 @@ var Commands = (function () {
         }
         return isDirectoryName;
     };
+    Commands.prototype.getGenerateType = function () {
+        for (var i = 1; i < this.userArgs.length; i++) {
+            if (!/^--path=."?.+."?$/.test(this.userArgs[i])) {
+                if (/^base$/.test(this.userArgs[i])) {
+                    return 'base';
+                }
+                else if (/^parts$/.test(this.userArgs[i])) {
+                    return 'parts';
+                }
+                else if (/^pages$/.test(this.userArgs[i])) {
+                    return 'pages';
+                }
+            }
+        }
+    };
     Commands.prototype.runNewCommand = function () {
         this.setParams({
             directoryName: this.getDirectoryName(),
@@ -259,10 +275,14 @@ var Commands = (function () {
         new Create_1.default(this.params);
     };
     Commands.prototype.runGenerateCommand = function () {
-        if (this.userArgs.length > 1) {
-            this.setParams({});
-            new Generate_1.default(this.params, this.userArgs[1]);
-        }
+        this.setParams({
+            generateParams: {
+                directoryName: this.getDirectoryName(),
+                path: this.getInputPath(),
+                type: this.getGenerateType()
+            }
+        });
+        new Generate_1.default(this.params);
     };
     Commands.prototype.setParams = function (data) {
         this.params = Params_1.Params.fromData(data);
@@ -1463,21 +1483,16 @@ exports.default = Create;
 Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = __webpack_require__(3);
 var Generate = (function () {
-    function Generate(params, types) {
-        console.log(params);
-        switch (types) {
+    function Generate(params) {
+        switch (params.generateParams.type) {
             case 'base':
-                new index_1.default(params.baseDirectoryPath, params.baseDirectoryName, function () { });
+                new index_1.default(params.directoryPath, params.baseDirectoryName, function () { });
                 break;
             case 'pages':
-                new index_1.default(params.directoryPath, '', function () {
-                    new index_1.default(params.pagesDirectoryPath, params.pagesDirectoryName, function () { });
-                });
+                new index_1.default(params.directoryPath, params.pagesDirectoryName, function () { });
                 break;
             case 'parts':
-                new index_1.default(params.directoryPath, '', function () {
-                    new index_1.default(params.partsDirectoryPath, params.partsDirectoryName, function () { });
-                });
+                new index_1.default(params.directoryPath, params.partsDirectoryName, function () { });
         }
     }
     return Generate;
@@ -1617,7 +1632,7 @@ exports.default = File;
 Object.defineProperty(exports, "__esModule", { value: true });
 var path = __webpack_require__(0);
 var Params = (function () {
-    function Params(rootPath, directoryName, directoryPath, baseDirectoryName, baseDirectoryPath, pagesDirectoryName, pagesDirectoryPath, partsDirectoryName, partsDirectoryPath) {
+    function Params(rootPath, directoryName, directoryPath, baseDirectoryName, baseDirectoryPath, pagesDirectoryName, pagesDirectoryPath, partsDirectoryName, partsDirectoryPath, generateParams) {
         this.rootPath = rootPath;
         this.directoryName = directoryName;
         this.directoryPath = directoryPath;
@@ -1627,28 +1642,61 @@ var Params = (function () {
         this.pagesDirectoryPath = pagesDirectoryPath;
         this.partsDirectoryName = partsDirectoryName;
         this.partsDirectoryPath = partsDirectoryPath;
+        this.generateParams = generateParams;
         this.init();
     }
     Params.fromData = function (data) {
-        return new Params(data.path ? path.resolve(process.cwd(), data.path) : process.cwd() + '/', data.directoryName ? data.directoryName : 'scss', null, data.baseDirectoryName ? data.baseDirectoryName : 'base', null, data.pagesDirectoryName ? data.pagesDirectoryName : 'pages', null, data.partsDirectoryName ? data.partsDirectoryName : 'parts', null);
+        return new Params(data.path ? path.resolve(process.cwd(), data.path) : process.cwd() + '/', data.directoryName ? data.directoryName : 'scss', null, data.baseDirectoryName ? data.baseDirectoryName : 'base', data.baseDirectoryPath ? data.baseDirectoryPath : null, data.pagesDirectoryName ? data.pagesDirectoryName : 'pages', null, data.partsDirectoryName ? data.partsDirectoryName : 'parts', null, data.generateParams ? GenerateParams.fromData(data.generateParams) : null);
     };
     Params.prototype.init = function () {
         if (!this.directoryPath) {
-            this.directoryPath = path.resolve(this.rootPath, this.directoryName);
+            this.directoryPath = this.getDirectoryPath();
         }
         if (!this.baseDirectoryPath) {
-            this.baseDirectoryPath = path.resolve(this.directoryPath, this.baseDirectoryName);
+            this.baseDirectoryPath = this.getBaseDirectoryPath();
         }
         if (!this.pagesDirectoryPath) {
-            this.pagesDirectoryPath = path.resolve(this.directoryPath, this.pagesDirectoryName);
+            this.pagesDirectoryPath = this.getPagesDirectoryPath();
         }
         if (!this.partsDirectoryPath) {
-            this.partsDirectoryPath = path.resolve(this.directoryPath, this.partsDirectoryName);
+            this.partsDirectoryPath = this.getPartsDirectoryPath();
         }
+    };
+    Params.prototype.getDirectoryPath = function () {
+        if (this.generateParams) {
+            return this.generateParams.getDirectoryPath();
+        }
+        else {
+            return path.resolve(this.rootPath, this.directoryName);
+        }
+    };
+    Params.prototype.getBaseDirectoryPath = function () {
+        return path.resolve(this.directoryPath, this.baseDirectoryName);
+    };
+    Params.prototype.getPagesDirectoryPath = function () {
+        return path.resolve(this.directoryPath, this.pagesDirectoryName);
+    };
+    Params.prototype.getPartsDirectoryPath = function () {
+        return path.resolve(this.directoryPath, this.partsDirectoryName);
     };
     return Params;
 }());
 exports.Params = Params;
+var GenerateParams = (function () {
+    function GenerateParams(rootPath, directoryName, type) {
+        this.rootPath = rootPath;
+        this.directoryName = directoryName;
+        this.type = type;
+    }
+    GenerateParams.fromData = function (data) {
+        return new GenerateParams(data.path ? path.resolve(process.cwd(), data.path) : process.cwd() + '/', data.directoryName ? data.directoryName : data.type, data.type ? data.type : 'base');
+    };
+    GenerateParams.prototype.getDirectoryPath = function () {
+        return path.resolve(this.rootPath, this.directoryName);
+    };
+    return GenerateParams;
+}());
+exports.GenerateParams = GenerateParams;
 
 
 /***/ }),
