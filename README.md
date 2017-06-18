@@ -53,6 +53,12 @@ apb new [appName] --path=path
 **Default Usage**
 
 ```
+apb generate [assetsType]
+```
+
+or
+
+```
 apb --generate [assetsType]
 ```
 

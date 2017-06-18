@@ -15,8 +15,6 @@ export class CreateModel {
     this.directoryPath = directoryPath;
     this.directoryName = directoryName;
 
-    console.log(this.directoryName);
-
     this.fetchScssFiles(() => {
       this.filterScssFiles(directoryPath, () => {});
       this.createFilesData();

@@ -91,7 +91,7 @@ module.exports = require("path");
 Object.defineProperty(exports, "__esModule", { value: true });
 var path = __webpack_require__(0);
 var App = {
-    VERSION: "0.1.1",
+    VERSION: "0.1.2",
     DIRECTORY_PERMISSION: '757',
     SCSS_FILES_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/packages/lib/files/scss'),
     PACKAGE_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/')
@@ -126,7 +126,6 @@ var CreateModel = (function () {
         this.files = [];
         this.directoryPath = directoryPath;
         this.directoryName = directoryName;
-        console.log(this.directoryName);
         this.fetchScssFiles(function () {
             _this.filterScssFiles(directoryPath, function () { });
             _this.createFilesData();
