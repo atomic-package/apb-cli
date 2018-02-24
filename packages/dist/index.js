@@ -91,7 +91,7 @@ module.exports = require("path");
 Object.defineProperty(exports, "__esModule", { value: true });
 var path = __webpack_require__(0);
 var App = {
-    VERSION: "0.1.2",
+    VERSION: "0.1.4",
     DIRECTORY_PERMISSION: '757',
     SCSS_FILES_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/packages/lib/files/scss'),
     PACKAGE_PATH: path.resolve(process.argv[1], '../../lib/node_modules/@atomic-package/apb-cli/')
