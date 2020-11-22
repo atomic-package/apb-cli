@@ -1,6 +1,6 @@
 {
   "name": "@atomic-package/apb-cli",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "description": "Command line tool for developing APB CSS (Atomic Parts Base CSS)",
   "main": "./packages/dist/index.js",
   "bin": {
@@ -9,9 +9,6 @@
   "scripts": {
     "test": "$(npm bin)/mocha test/** -r test/spec_setup.js",
     "test:watch": "$(npm bin)/mocha -w test/** -r test/spec_setup.js",
-    "start": "concurrently \"npm run webpack:w\" \"gulp\"",
-    "webpack": "webpack",
-    "webpack:w": "webpack --progress --colors --watch",
     "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\""
   },
   "repository": {
@@ -28,32 +25,10 @@
   "author": "daisuke.takayama",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^7.0.14",
-    "@types/webpack": "^2.2.15",
-    "chai": "^3.5.0",
-    "concurrently": "^3.4.0",
-    "del": "^2.2.2",
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-mocha": "^4.3.1",
-    "gulp-plumber": "^1.1.0",
-    "gulp-uglify": "^2.1.2",
-    "gulp-watch": "^4.3.11",
-    "jsdom": "^10.0.0",
-    "path": "^0.12.7",
-    "power-assert": "^1.4.2",
-    "run-sequence": "^1.2.2",
-    "ts-loader": "^2.0.3",
-    "ts-node": "^3.0.4",
-    "typescript": "^2.3.1",
-    "typings": "^2.1.1",
-    "webpack": "^2.4.1"
+    "concurrently": "^3.4.0"
   },
   "bugs": {
     "url": "https://github.com/atomic-package/apb-cli/issues"
   },
-  "homepage": "https://github.com/atomic-package/apb-cli#readme",
-  "dependencies": {
-    "commander": "^2.9.0"
-  }
+  "homepage": "https://github.com/atomic-package/apb-cli#readme"
 }
