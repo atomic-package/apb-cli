@@ -41,7 +41,7 @@ apb new [appName]
 
 
 ```
-apb new [appName] --path=path
+apb --path=path new [appName]
 ```
 
 任意の生成パスを指定できます。
@@ -54,12 +54,6 @@ apb new [appName] --path=path
 
 ```
 apb generate [assetsType]
-```
-
-or
-
-```
-apb --generate [assetsType]
 ```
 
 **Shortcut**
